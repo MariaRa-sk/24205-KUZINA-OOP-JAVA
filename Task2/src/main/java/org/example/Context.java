@@ -50,7 +50,6 @@ public class Context {
     public void put(String key, double value){
         parametrs.put(key, value);
     }
-
 }
 
 

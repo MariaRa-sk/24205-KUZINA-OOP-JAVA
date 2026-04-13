@@ -13,18 +13,24 @@ import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Фабрика команд.
  * Загружает команды из JAR-файлов, указанных в конфигурационном файле.
  */
 public class CommandFactory {
+    private final Logger log = LoggerFactory.getLogger(CommandFactory.class);
     private Map<String, Class<? extends Command>> commands = new HashMap<>();
 
     /**
      * Создаёт фабрику и загружает все доступные команды.
      */
     public CommandFactory() {
+        log.info("Инициализация CommandFactory");
         loadCommands();
+        log.info("Загружено команд: {}", commands.size());
     }
 
     /**
@@ -60,6 +66,7 @@ public class CommandFactory {
      * и регистрирует их в фабрике.
      */
     private void loadCommandsFromJar(String jarPath) {
+        log.debug("Загрузка JAR-файла: {}", jarPath);
         try {
             JarFile jarFile = new JarFile(jarPath);
             URL jarUrl = new URL("file:" + jarPath);
@@ -81,14 +88,14 @@ public class CommandFactory {
 
                         if (clazz.isAnnotationPresent(CommandName.class) &&
                                 Command.class.isAssignableFrom(clazz)) {
-
+                            log.debug("Найден класс команды: {}", className);
                             CommandName annotation = clazz.getAnnotation(CommandName.class);
                             String commandName = annotation.value();
 
                             commands.put(commandName, (Class<? extends Command>) clazz);
                         }
                     } catch (ClassNotFoundException e) {
-
+                        log.error("Ошибка загрузки JAR: {}", jarPath, e);
                     }
                 }
             }
@@ -106,6 +113,7 @@ public class CommandFactory {
      * @return экземпляр команды
      */
     public Command create(String name) {
+        log.debug("Создание команды: {}", name);
         Class<? extends Command> clazz = commands.get(name);
         if (clazz == null) {
             throw new CommandFactoryException("Неизвестная команда: " + name);
