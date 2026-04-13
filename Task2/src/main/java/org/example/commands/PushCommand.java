@@ -5,6 +5,10 @@ import org.example.Context;
 import org.example.exceptions.InvalidArgumentsCountException;
 import org.example.exceptions.InvalidArgumentsException;
 
+/**
+ * Команда добавления элемента в стек.
+ * Поддерживает числа и именованные переменные.
+ */
 @CommandName("PUSH")
 public class PushCommand implements Command{
     @Override

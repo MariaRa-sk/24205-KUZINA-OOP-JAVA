@@ -5,6 +5,10 @@ import org.example.Context;
 import org.example.exceptions.InvalidArgumentsException;
 import org.example.exceptions.InvalidArgumentsCountException;
 
+/**
+ * Команда определения переменной.
+ * Сохраняет числовое значение по указанному имени переменной.
+ */
 @CommandName("DEFINE")
 public class DefineCommand implements Command{
     @Override

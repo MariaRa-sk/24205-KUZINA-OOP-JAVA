@@ -4,6 +4,10 @@ import org.example.CommandName;
 import org.example.Context;
 import org.example.exceptions.InsufficientStackException;
 
+/**
+ * Команда умножения двух верхних чисел стека.
+ * Извлекает два числа и помещает результат их умножения.
+ */
 @CommandName("*")
 public class MulCommand implements Command{
     @Override

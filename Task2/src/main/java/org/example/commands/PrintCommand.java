@@ -4,6 +4,9 @@ import org.example.CommandName;
 import org.example.Context;
 import org.example.exceptions.InsufficientStackException;
 
+/**
+ * Команда печати верхнего элемента стека на экран.
+ */
 @CommandName("PRINT")
 public class PrintCommand implements Command{
     @Override

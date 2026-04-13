@@ -5,6 +5,10 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Контекст выполнения команд.
+ * Хранит стек чисел и словарь именованных параметров.
+ */
 public class Context {
     private Deque<Double> stack = new ArrayDeque<>();
     private Map<String, Double> parametrs = new HashMap<>();

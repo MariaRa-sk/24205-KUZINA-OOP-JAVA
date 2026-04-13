@@ -5,6 +5,9 @@ import org.example.Context;
 import org.example.exceptions.InsufficientStackException;
 import org.example.exceptions.NegativeSqrtException;
 
+/**
+ * Команда извлечения квадратного корня из верхнего числа стека.
+ */
 @CommandName("SQRT")
 public class SqrtCommand implements Command{
     @Override

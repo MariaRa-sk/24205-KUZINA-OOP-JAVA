@@ -4,6 +4,9 @@ import org.example.CommandName;
 import org.example.Context;
 import org.example.exceptions.InsufficientStackException;
 
+/**
+ * Команда удаления верхнего элемента стека.
+ */
 @CommandName("POP")
 public class PopCommand implements Command{
     @Override

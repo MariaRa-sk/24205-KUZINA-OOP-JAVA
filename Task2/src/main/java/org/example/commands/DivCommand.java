@@ -5,6 +5,11 @@ import org.example.Context;
 import org.example.exceptions.DivisionByZeroException;
 import org.example.exceptions.InsufficientStackException;
 
+
+/**
+ * Команда деления двух верхних чисел стека.
+ * Извлекает два числа и помещает результат деления второго на первое.
+ */
 @CommandName(":")
 public class DivCommand implements Command{
     @Override
