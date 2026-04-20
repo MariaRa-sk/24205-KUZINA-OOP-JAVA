@@ -14,7 +14,7 @@ public class DefineCommand implements Command{
     @Override
     public void execute(String[] args, Context context){
         if (args.length != 3){
-            throw new InvalidArgumentsCountException(args[0], 3, args.length - 1);
+            throw new InvalidArgumentsCountException(args[0], 2, args.length - 1);
         }
 
         String command = args[0];

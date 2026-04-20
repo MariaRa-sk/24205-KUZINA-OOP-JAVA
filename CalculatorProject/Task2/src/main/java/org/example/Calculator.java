@@ -3,6 +3,7 @@ package org.example;
 import org.example.commands.Command;
 import org.example.exceptions.CalculatorExeption;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.slf4j.Logger;
@@ -16,10 +17,12 @@ public class Calculator {
     private final Logger log = LoggerFactory.getLogger(Calculator.class);
     private Context context;
     private CommandFactory factory;
+    private InputParser parser;
 
     public Calculator() {
         this.context = new Context();
         this.factory = new CommandFactory();
+        this.parser = new InputParser();
     }
 
     /**
@@ -27,7 +30,7 @@ public class Calculator {
      * Читает команды из источника (файл или консоль) и выполняет их.
      */
     public void run(String[] args) {
-        log.info("Запуск калькулятора. Args: {}", (Object) args);
+        log.info("Запуск калькулятора. Args: {}", Arrays.toString(args));
         ScannerCreator creator = new ScannerCreator();
 
         try (Scanner scanner = creator.createScanner(args)) {
@@ -35,11 +38,10 @@ public class Calculator {
                 String line = scanner.nextLine().trim();
                 log.debug("Прочитана строка: {}", line);
 
-                if (line.isEmpty() || line.startsWith("#")) {
+                String[] tokens = parser.parseLine(line);
+                if (tokens == null) {
                     continue;
                 }
-
-                String[] tokens = line.split("\\s+");
 
                 try {
                     Command command = factory.create(tokens[0]);

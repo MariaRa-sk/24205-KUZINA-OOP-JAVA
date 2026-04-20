@@ -6,13 +6,8 @@ import org.example.exceptions.InvalidArgumentsCountException;
 import org.example.exceptions.InvalidArgumentsException;
 
 
-//Сделать отдельный maven модуль с командой MIN
-//Если n <1 ошибка
-//Если не хватает аргументов на стеке, ошибка
-//Берем n элементов со стека, определяем минимальный и записываем на стек.
-
 /**
- * Команда ищет минимальный элемент среди
+ * Команда ищет минимальный элемент среди n верхних элементов стека
  */
 @CommandName("MIN")
 public class MinCommand implements Command {
