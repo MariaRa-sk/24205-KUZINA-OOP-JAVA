@@ -36,12 +36,11 @@ public class MinCommand implements Command {
         double min =  Double.MAX_VALUE;
         
         for (int i = 0; i < n; ++i){
-            double tmp = context.peek();
+            double tmp = context.pop();
             if (tmp < min){
                 min = tmp;
             }
         }
-        System.out.println("СУЧАРА");
         context.push(min);
     }
 }
