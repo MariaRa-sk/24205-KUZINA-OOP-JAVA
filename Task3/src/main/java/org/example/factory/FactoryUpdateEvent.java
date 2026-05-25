@@ -41,7 +41,7 @@ public class FactoryUpdateEvent {
         this.motorProduced = Product.getProducedCount(ProductType.MOTOR);
         this.accProduced = Product.getProducedCount(ProductType.ACCESSORY);
         this.carProduced = Product.getProducedCount(ProductType.CAR);
-        this.queueSize = factory.getWorkersPool().getQueue().size();
+        this.queueSize = factory.getWorkersPool().getQueueSize();
     }
 
     public int getBodyStorageSize() { return bodyStorageSize; }

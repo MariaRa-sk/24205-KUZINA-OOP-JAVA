@@ -72,8 +72,4 @@ public class Config {
     public int getDealers(){
         return dealers;
     }
-
-    public boolean isLogSale(){
-        return logSale;
-    }
 }

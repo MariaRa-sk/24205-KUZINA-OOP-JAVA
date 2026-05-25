@@ -19,10 +19,10 @@ public class Factory {
     private final Storage<Accessory> storageAccessory;
     private final Storage<Car> storageCar;
 
-    private final ThreadPoolExecutor workersPool;
+    private FactoryThreadPool workersPool;
     private final Object controllerMonitor;
 
-    private final StorageController controller;
+    private StorageController controller;
     private final List<Thread> threads;
 
     private final List<FactoryListener> listeners = new ArrayList<>();
@@ -40,10 +40,7 @@ public class Factory {
         this.storageAccessory = new Storage<>(config.getStorageAccessorySize());
         this.storageCar = new Storage<>(config.getStorageAutoSize());
         this.controllerMonitor = new Object();
-        this.workersPool = new ThreadPoolExecutor(
-                config.getWorkers(), config.getWorkers(),
-                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>()
-        );
+        this.workersPool = new FactoryThreadPool(config.getWorkers());
         this.controller = new StorageController(storageCar, storageBody, storageMotor,
                 storageAccessory, workersPool, controllerMonitor,this);
 
@@ -56,16 +53,32 @@ public class Factory {
         this.threads = new ArrayList<>();
     }
 
+    public void stop() {
+        for (Thread t : threads) {
+            t.interrupt();
+        }
+        threads.clear();
+        workersPool.shutdown();
+    }
+
     public void start() {
+        threads.clear();
+        bodySuppliers.clear();
+        motorSuppliers.clear();
+        accSuppliers.clear();
+        dealers.clear();
+
+        this.workersPool = new FactoryThreadPool(config.getWorkers());
+        this.controller = new StorageController(storageCar, storageBody, storageMotor,
+                storageAccessory, workersPool, controllerMonitor, this);
 
         Thread controllerThread = new Thread(controller);
         controllerThread.start();
         threads.add(controllerThread);
 
-
         for (int i = 0; i < config.getBodySuppliers(); i++) {
             Supplier<Body> supplier = new Supplier<>(storageBody, Body.class, this, controller);
-            bodySuppliers.add(supplier);  // ← Сохраняем
+            bodySuppliers.add(supplier);
             Thread t = new Thread(supplier);
             t.start();
             threads.add(t);
@@ -89,7 +102,7 @@ public class Factory {
 
         for (int i = 0; i < config.getDealers(); i++) {
             Dealer dealer = new Dealer(storageCar, controller, this);
-            dealers.add(dealer);  // ← Сохраняем
+            dealers.add(dealer);
             Thread t = new Thread(dealer);
             t.start();
             threads.add(t);
@@ -101,13 +114,6 @@ public class Factory {
                 controller.notifyController();
             } catch (InterruptedException ignored) {}
         }).start();
-    }
-
-    public void stop() {
-        for (Thread t : threads) {
-            t.interrupt();
-        }
-        workersPool.shutdown();
     }
 
     public void addListener(FactoryListener listener) {
@@ -129,6 +135,6 @@ public class Factory {
     public Storage<Motor> getStorageMotor() { return storageMotor; }
     public Storage<Accessory> getStorageAccessory() { return storageAccessory; }
     public Storage<Car> getStorageCar() { return storageCar; }
-    public ThreadPoolExecutor getWorkersPool() { return workersPool; }
+    public FactoryThreadPool getWorkersPool() { return workersPool; }
     public StorageController getController() { return controller; }
 }

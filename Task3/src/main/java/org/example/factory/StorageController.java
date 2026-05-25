@@ -13,12 +13,12 @@ public class StorageController implements Runnable {
     private final Storage<Motor> motorStorage;
     private final Storage<Accessory> accessoryStorage;
     private final Factory factory;
-    private final ThreadPoolExecutor workersPool;
+    private final FactoryThreadPool workersPool;
     private final Object monitor;
 
     public StorageController(Storage<Car> carStorage, Storage<Body> bodyStorage,
                              Storage<Motor> motorStorage, Storage<Accessory> accessoryStorage,
-                             ThreadPoolExecutor workersPool, Object monitor,Factory factory) {
+                             FactoryThreadPool workersPool, Object monitor,Factory factory) {
         this.carStorage = carStorage;
         this.bodyStorage = bodyStorage;
         this.motorStorage = motorStorage;
